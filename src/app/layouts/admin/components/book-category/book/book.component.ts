@@ -1,0 +1,148 @@
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {BookService} from "../../../../../services/book.service";
+import {Page} from "../../../../../models/page";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ConfirmDialogComponent} from "../../../../../shared/confirm-dialog/confirm-dialog.component";
+import {CategoryService} from "../../../../../services/category.service";
+import {Category} from "../../../../../models/category";
+import {AngularFireStorage} from "@angular/fire/storage";
+import {finalize} from "rxjs/operators";
+import {ActivatedRoute} from "@angular/router";
+
+
+@Component({
+  selector: 'app-book',
+  templateUrl: './book.component.html',
+  styleUrls: ['./book.component.css']
+})
+export class BookComponent implements OnInit {
+
+  //Table
+  rows = [];
+  cols = [];
+  page = new Page();
+  @ViewChild('templateActionsCell', {static: true}) templateDeleteCell: TemplateRef<any>;
+
+  //Form
+  modalRef: BsModalRef;
+  bookForm: FormGroup;
+  categories: Category[] = [];
+  imageFile = null;
+
+
+  constructor(private _bookService: BookService,
+              private _categoryService: CategoryService,
+              private _modalService: BsModalService,
+              private _formBuilder: FormBuilder,
+              private _storage: AngularFireStorage,
+              private _activatedRoute: ActivatedRoute) {  }
+
+  ngOnInit(): void {
+    this.initColumns();
+    this.setPage({offset: 0});
+    this.initForm();
+    this.getCategories();
+  }
+
+
+  //Table
+  initColumns(){
+    this.cols = [
+      {prop: 'name', name: 'Book Name'},
+      {prop: 'author', name: 'Author Name'},
+      {prop: 'unitPrice', name: 'Price'},
+      {prop: 'unitsInStock', name: 'Stock'},
+      {prop: 'category.name', name: 'Category'},
+      {prop: 'id', name: 'Actions', cellTemplate: this.templateDeleteCell, flexGrow: 1, sortable: false}
+    ];
+  }
+
+  setPage(pageInfo){
+    let categoryId = this._activatedRoute.snapshot.paramMap.get('id');
+    this.page.page = pageInfo.offset;
+    this._bookService.getAll(categoryId, this.page).subscribe( data => {
+      this.page.size = data.size;
+      this.page.page = data.page;
+      this.page.totalElements = data.totalElements;
+      this.rows = data.content;
+    })
+  }
+
+  showDeleteConfirm(value) :void{
+    const modal = this._modalService.show(ConfirmDialogComponent);
+    (<ConfirmDialogComponent>modal.content).showConfirm(
+      'Are you sure you want to delete this book?'
+    );
+    (<ConfirmDialogComponent>modal.content).onClose.subscribe(
+      result => {
+        if (result === true){
+          this._bookService.delete(value).subscribe(
+            response => {
+              if (response === true)
+                this.setPage({offset: 0})
+            });
+        }
+      }
+    );
+  }
+
+  //Form
+  initForm(){
+    this.bookForm = this._formBuilder.group({
+      'name': [null, Validators.required],
+      'author': [null, Validators.required],
+      'description': [null, Validators.required],
+      'unitPrice': [null, Validators.required],
+      'unitsInStock': [null, Validators.required],
+      'imageUrl': [null, Validators.required],
+      'category': [null, Validators.required]
+    });
+  }
+
+  openModal(template: TemplateRef<any>){
+    this.modalRef = this._modalService.show(template);
+  }
+
+  closeModal(){
+    this.bookForm.reset();
+    this.modalRef.hide();
+  }
+
+  saveBook(){
+    if (!this.bookForm.valid)
+      return;
+    let filePath = `books/${this.imageFile.name}_${new Date().getTime()}`;
+    const fileRef = this._storage.ref(filePath);
+    this._storage.upload(filePath, this.imageFile).snapshotChanges().pipe(
+      finalize(() => {
+        fileRef.getDownloadURL().subscribe((url) => {
+          this.bookForm.value['imageUrl'] = url;
+          this._bookService.create(this.bookForm.value).subscribe(() => {
+              this.setPage({offset: 0})
+              this.closeModal();
+            });
+        })
+      })
+    ).subscribe();
+  }
+
+  get formControls() {return this.bookForm.controls}
+
+  getCategories(){
+    this._categoryService.getAll().subscribe(data => {
+        this.categories = data;
+      }
+    );
+  }
+
+  onFileSelected(event) {
+    if (event.target.files && event.target.files[0]){
+      this.imageFile = event.target.files[0];
+    }
+    else{
+      this.imageFile = null;
+    }
+  }
+
+}

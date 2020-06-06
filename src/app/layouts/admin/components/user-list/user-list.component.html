@@ -1,0 +1,25 @@
+<ngx-datatable class="material w-100"
+               [rows]="books"
+               [columnMode]="'force'"
+               [headerHeight]="50"
+               [rowHeight]="'auto'"
+               [footerHeight]="50"
+               [externalPaging]="true"
+               [count]="page.totalElements"
+               [offset]="page.page"
+               [limit]="page.size"
+               (page)="setPage($event)">
+  <ngx-datatable-column prop="name" name="Name"></ngx-datatable-column>
+  <ngx-datatable-column prop="username" name="Username"></ngx-datatable-column>
+  <ngx-datatable-column prop="email" name="E-Mail"></ngx-datatable-column>
+</ngx-datatable>
+
+<!--<ng-template #templateActionsCell let-row="row" let-value="value">-->
+<!--  <a class="pointer" (click)="showDeleteConfirm(value)">-->
+<!--    <i class="fas fa-trash-alt text-danger"></i>-->
+<!--  </a>-->
+<!--  <a class="pointer" routerLink="/admin/book/{{value}}">-->
+<!--    <i class="far fa-edit ml-3"></i>-->
+<!--  </a>-->
+<!--</ng-template>-->
+
