@@ -1,10 +1,10 @@
 
   <div class="mb-3">
-    <button type="button" class="btn btn-secondary" (click)="openModal(templateInsert)">
+    <button mat-raised-button type="button" (click)="openModal(templateInsert)">
       New Book <i class="fas fa-plus-circle ml-2"></i>
     </button>
-    <input class="searchInput" type="text" placeholder="Search book"/>
-<!--      (keyup)="updateFilter($event)"/>-->
+    <input #searchInput class="searchInput" type="text" placeholder="Search book"
+      (keyup.enter)="searchBooks(searchInput.value)"/>
   </div>
 
   <ngx-datatable class="material w-100"

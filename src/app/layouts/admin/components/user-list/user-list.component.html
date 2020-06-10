@@ -1,3 +1,12 @@
+<div class="mb-3">
+  <button mat-raised-button type="button"> <!--(click)="openModal(templateInsert)">-->
+    Create Admin Account <i class="fas fa-user ml-2"></i>
+  </button>
+  <input #searchInput class="searchInput" type="text" placeholder="Search user"/>
+<!--         (keyup.enter)="searchBooks(searchInput.value)"/>-->
+</div>
+
+
 <ngx-datatable class="material w-100"
                [rows]="books"
                [columnMode]="'force'"
@@ -12,7 +21,13 @@
   <ngx-datatable-column prop="name" name="Name"></ngx-datatable-column>
   <ngx-datatable-column prop="username" name="Username"></ngx-datatable-column>
   <ngx-datatable-column prop="email" name="E-Mail"></ngx-datatable-column>
+  <ngx-datatable-column prop="admin" name="Role" sortable="false" [cellTemplate]="roleTemplate"></ngx-datatable-column>
 </ngx-datatable>
+
+<ng-template #roleTemplate let-row="row" let-value="value">
+  <i *ngIf="value === true" class="fas fa-user-cog text-success"></i>
+  <i *ngIf="value === false" class="fas fa-user-lock text-primary"></i>
+</ng-template>
 
 <!--<ng-template #templateActionsCell let-row="row" let-value="value">-->
 <!--  <a class="pointer" (click)="showDeleteConfirm(value)">-->

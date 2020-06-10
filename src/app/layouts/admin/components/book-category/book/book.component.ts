@@ -8,7 +8,7 @@ import {CategoryService} from "../../../../../services/category.service";
 import {Category} from "../../../../../models/category";
 import {AngularFireStorage} from "@angular/fire/storage";
 import {finalize} from "rxjs/operators";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 
 @Component({
@@ -36,13 +36,16 @@ export class BookComponent implements OnInit {
               private _modalService: BsModalService,
               private _formBuilder: FormBuilder,
               private _storage: AngularFireStorage,
-              private _activatedRoute: ActivatedRoute) {  }
+              private _activatedRoute: ActivatedRoute,
+              private _router: Router) {  }
 
   ngOnInit(): void {
     this.initColumns();
-    this.setPage({offset: 0});
     this.initForm();
     this.getCategories();
+    this._activatedRoute.paramMap.subscribe(()=>{
+      this.setPage({offset: 0});
+    })
   }
 
 
@@ -59,14 +62,33 @@ export class BookComponent implements OnInit {
   }
 
   setPage(pageInfo){
-    let categoryId = this._activatedRoute.snapshot.paramMap.get('id');
     this.page.page = pageInfo.offset;
-    this._bookService.getAll(categoryId, this.page).subscribe( data => {
-      this.page.size = data.size;
-      this.page.page = data.page;
-      this.page.totalElements = data.totalElements;
-      this.rows = data.content;
-    })
+    if (this._activatedRoute.snapshot.paramMap.has('id')){
+      const categoryId = this._activatedRoute.snapshot.paramMap.get('id');
+      this._bookService.getAllByCategoryId(categoryId, this.page).subscribe( data => {
+        this.page.size = data.size;
+        this.page.page = data.page;
+        this.page.totalElements = data.totalElements;
+        this.rows = data.content;
+      })
+    }
+    else if (this._activatedRoute.snapshot.paramMap.has('keyword')){
+      const bookName = this._activatedRoute.snapshot.paramMap.get('keyword');
+      this._bookService.getAllByName(bookName, this.page).subscribe(data => {
+        this.page.size = data.size;
+        this.page.page = data.page;
+        this.page.totalElements = data.totalElements;
+        this.rows = data.content;
+      })
+    }
+    else{
+      this._bookService.getAll(this.page).subscribe( data => {
+        this.page.size = data.size;
+        this.page.page = data.page;
+        this.page.totalElements = data.totalElements;
+        this.rows = data.content;
+      })
+    }
   }
 
   showDeleteConfirm(value) :void{
@@ -145,4 +167,8 @@ export class BookComponent implements OnInit {
     }
   }
 
+  searchBooks(keyword: string) {
+    if (keyword != null && keyword.trim() != "")
+      this._router.navigateByUrl('/admin/book/search/' + keyword);
+  }
 }

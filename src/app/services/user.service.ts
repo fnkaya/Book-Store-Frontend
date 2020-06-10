@@ -31,13 +31,25 @@ export class UserService {
   }
 
   getById(id): Observable<any>{
-    return this._apiService.get(this.USER_PATH, id).pipe(map(response => {
+    return this._apiService.get(this.USER_PATH +'/'+ id, null).pipe(map(response => {
           if (response) return response;
           else {
             console.log(response)
             return ;
           }
         }
+      )
+    );
+  }
+
+  getByUsername(username): Observable<any>{
+    return this._apiService.get(this.USER_PATH +'/search?username='+ username, null).pipe(map(response => {
+        if (response) return response;
+        else {
+          console.log(response)
+          return ;
+        }
+      }
       )
     );
   }

@@ -1,7 +1,7 @@
 <div class="container w-100 mt-5">
   <div class="row">
     <div class="col-3">
-      <img src="{{bookForm.value.imageUrl}}" alt="">
+      <img src="{{bookForm.value.imageUrl}}" width="250px" alt="">
     </div>
     <div class="col-9">
       <form *ngIf="bookForm" [formGroup]="bookForm" (ngSubmit)="saveBook()">

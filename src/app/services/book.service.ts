@@ -41,7 +41,7 @@ export class BookService {
 
   //ADMIN SAYFASINDA KULLANILACAK
 
-  getAll(categoryId, page): Observable<any>{
+  getAll(page): Observable<any>{
     return this._apiService.get("/book", page).pipe(map(
         response => {
           if (response) return response;
@@ -50,6 +50,32 @@ export class BookService {
             return ;
           }
         }
+      )
+    );
+  }
+
+  getAllByCategoryId(categoryId, page): Observable<any>{
+    return this._apiService.get("/book/category?id=" + categoryId, page).pipe(map(
+      response => {
+        if (response) return response;
+        else {
+          console.log(response)
+          return ;
+        }
+      }
+      )
+    );
+  }
+
+  getAllByName(bookName, page): Observable<any>{
+    return this._apiService.get("/book/search?name=" + bookName, page).pipe(map(
+      response => {
+        if (response) return response;
+        else {
+          console.log(response)
+          return ;
+        }
+      }
       )
     );
   }

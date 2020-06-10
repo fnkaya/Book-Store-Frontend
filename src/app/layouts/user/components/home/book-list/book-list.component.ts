@@ -12,9 +12,7 @@ import {CartItem} from "../../../../../models/cart-item";
 })
 export class BookListComponent implements OnInit {
 
-  add_to_cart = "Add to Cart";
-  go_to_details = "Details";
-  not_found = "No books found";
+
   books: Book[] = [];
   currentCategoryId: number = -1;
   previousCategoryId: number = 1;

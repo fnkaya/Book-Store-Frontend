@@ -1,9 +1,19 @@
 <div class="d-flex flex-column flex-md-row align-items-center py-2 px-5 bg-light shadow">
   <a class="navbar-brand font-weight-bold text-dark" routerLink="/home" >{{title}}</a>
-  <app-search class="w-25 m-auto shadow-sm"></app-search>
+
   <nav class="navbar">
-    <a class="nav-link p-2 text-dark" href="/home">About</a>
-    <a class="nav-link p-2 text-dark" href="/home">Contact</a>
+    <a class="nav-link p-2 text-dark" routerLink="/home">About</a>
+    <a class="nav-link p-2 text-dark" routerLink="/home">Contact</a>
   </nav>
-  <a class="btn btn-outline-primary" href="#">Sign up</a>
+  <app-search class="w-25 m-auto shadow-sm"></app-search>
+  <a *ngIf="currentUser['admin']" routerLink="/admin/book" target="_blank" class="btn btn-outline-danger mr-5">
+    Admin Page
+    <i class="fas fa-user-cog ml-2"></i>
+  </a>
+  <span class="text-muted">{{currentUser['name']}}</span>
+  <a (click)="handleLogoutSignin()" class="btn btn-outline-primary ml-5">
+    <span *ngIf="token == null; then thenBlock; else elseBlock"></span>
+  </a>
+  <ng-template #thenBlock >Sign in</ng-template>
+  <ng-template #elseBlock >Logout</ng-template>
 </div>

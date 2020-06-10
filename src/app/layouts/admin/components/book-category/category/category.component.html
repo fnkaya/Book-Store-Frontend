@@ -1,6 +1,6 @@
 
       <div class="mb-3">
-        <button type="button" class="btn btn-secondary" (click)="openModal(templateInsert)">
+        <button mat-raised-button type="button" class="btn-block" (click)="openModal(templateInsert)">
           New Category <i class="fas fa-plus-circle ml-2"></i>
         </button>
       </div>
@@ -10,15 +10,19 @@
                      [columnMode]="'force'"
                      [headerHeight]="50"
                      [rowHeight]="'auto'">
-        <ngx-datatable-column prop="name" name="Category"></ngx-datatable-column>
-        <ngx-datatable-column prop="id" name="List" sortable="false" [cellTemplate]="templateCategoryEditCell"></ngx-datatable-column>
+        <ngx-datatable-column prop="name" name="Category" [minWidth]="100"></ngx-datatable-column>
+        <ngx-datatable-column prop="id" name="Filter" sortable="false" [cellTemplate]="templateCategoryEditCell"></ngx-datatable-column>
       </ngx-datatable>
 
       <ng-template #templateCategoryEditCell let-row="row" let-value="value">
-        <a class="pointer" routerLink="/admin/book/category/{{value}}">
+        <a class="pointer" routerLink="/admin/book/category/{{value}}" routerLinkActive="text-danger">
           <i class="fas fa-chevron-circle-right ml-1"></i>
         </a>
       </ng-template>
+
+      <button mat-raised-button class="btn-block mt-2 px-2" routerLink="/admin/book">
+        Filter Clear <i class="fas fa-filter ml-2"></i>
+      </button>
 
 
 

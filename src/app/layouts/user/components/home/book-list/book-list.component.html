@@ -17,17 +17,17 @@
           <div class="card-footer">
             <div class="btn-group">
               <button class="btn btn-outline-secondary float-left" routerLink="/home/book/{{book.id}}">
-                {{go_to_details}}
+                Details
               </button>
               <button class="btn btn-primary float-right" (click)="addToCart(book)">
-                {{add_to_cart}}
+                Add to Cart
               </button>
             </div>
           </div>
         </div>
       </div>
-      <div *ngIf="books?.length <= 0" class="col-12 alert alert-warning text-dark text-center shadow" >
-        {{not_found}}
+      <div *ngIf="books?.length == 0" class="col-12 alert alert-warning text-dark text-center shadow" >
+        No Books Found
       </div>
     </div>
 

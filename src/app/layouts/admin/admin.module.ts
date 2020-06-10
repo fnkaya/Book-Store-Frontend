@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {AdminComponent} from './admin.component';
 import {RouterModule} from "@angular/router";
 import {AdminRoutingModule} from "./admin-routing.module";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {BookService} from "../../services/book.service";
 import {CategoryService} from "../../services/category.service";
 import {NavbarComponent} from "./components/navbar/navbar.component";
@@ -17,8 +17,13 @@ import {BookDetailsComponent} from './components/book-details/book-details.compo
 import {BookCategoryComponent} from './components/book-category/book-category.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
-import { UserListComponent } from './components/user-list/user-list.component';
+import {UserListComponent} from './components/user-list/user-list.component';
 import {UserService} from "../../services/user.service";
+import {AuthenticationService} from "../../security/authentication.service";
+import {AuthGuard} from "../../security/auth.guard";
+import {JwtInterceptor} from "../../security/jwt.interceptor";
+import {ErrorInterceptor} from "../../security/authtentication.interceptor";
+import {MatButtonModule} from "@angular/material/button";
 
 
 @NgModule({
@@ -41,6 +46,7 @@ import {UserService} from "../../services/user.service";
     ReactiveFormsModule,
     MatSidenavModule,
     FormsModule,
+    MatButtonModule,
   ],
   exports: [RouterModule],
   providers: [
@@ -48,7 +54,11 @@ import {UserService} from "../../services/user.service";
     CategoryService,
     UserService,
     ApiService,
-    BsModalService
+    BsModalService,
+    AuthenticationService,
+    AuthGuard,
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ]
 })
 export class AdminModule { }
