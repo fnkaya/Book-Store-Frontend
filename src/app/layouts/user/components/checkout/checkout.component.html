@@ -1,0 +1,100 @@
+<div class="row">
+
+  <div class="col-8">
+
+        <form *ngIf="checkoutForm" [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="w-75">
+
+          <fieldset class="form-border">
+            <legend class="form-border">
+              <h3>Shipping Address</h3>
+            </legend>
+
+              <div class="row">
+                <div class="form-group col-6">
+                  <input type="text" formControlName="name" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group col-6">
+                  <input type="text" formControlName="phoneNumber" class="form-control" placeholder="Phone number" maxlength="14">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4 form-group">
+                    <input type="text" formControlName="city" class="form-control" placeholder="City">
+                </div>
+                <div class="col-4 form-group">
+                    <input type="text" formControlName="state" class="form-control" placeholder="State">
+                </div>
+                <div class="col-4 form-group">
+                  <input type="text" formControlName="zipcode" class="form-control" placeholder="Zipcode" maxlength="5">
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="text" formControlName="address" class="form-control" placeholder="Address">
+              </div>
+          </fieldset>
+
+          <fieldset class="form-border">
+            <legend class="form-border">
+              <h3>Credit Card</h3>
+            </legend>
+            <div formGroupName="cc">
+              <div class="form-group row">
+                <div class="col-5">
+                  <input type="text" formControlName="nameOnCC" class="form-control" placeholder="Name on card">
+                </div>
+                <div class="col-7">
+                  <input type="text" formControlName="ccNumber" class="form-control" placeholder="Card Number">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-5">
+                  <select formControlName="expMonth" class="form-control">
+                    <option *ngFor="let month of expirationMonth" [ngValue]="month">{{month}}</option>
+                  </select>
+                </div>
+                <div class="col-5">
+                  <select formControlName="expYear" class="form-control">
+                    <option *ngFor="let year of expirationYear" [ngValue]="year">{{year}}</option>
+                  </select>
+                </div>
+                <div class="col-2">
+                  <input type="text" formControlName="cvv" class="form-control" placeholder="CVV" maxlength="3">
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-block">Purchase</button>
+          </div>
+
+        </form>
+
+  </div>
+
+  <div class="col-4">
+    <div class="row">
+      <div class="col-md-12 order-md-2 mb-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Your cart</span>
+          <span class="badge badge-secondary badge-pill">{{totalQuantity}}</span>
+        </h4>
+        <ul class="list-group mb-3">
+          <li *ngFor="let cartItem of cartItems" class="list-group-item d-flex justify-content-between lh-condensed">
+            <div>
+              <h6 class="my-0 font-weight-bold">{{cartItem.name}}</h6>
+              <small class="text-muted">Quantity (x{{cartItem.quantity}})</small>
+            </div>
+            <span class="text-muted">{{cartItem.quantity * cartItem.unitPrice | currency: '₺'}}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (₺) </span>
+            <strong>{{totalPrice | currency: '₺'}}</strong>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+</div>

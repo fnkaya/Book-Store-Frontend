@@ -11,7 +11,9 @@ export class CartService {
   totalPrice: Subject<number> = new Subject<number>();
   totalQuantity: Subject<number> = new Subject<number>();
 
-  constructor() { }
+  constructor() {
+    this.setCartItems();
+  }
 
   addToCart(cartItem: CartItem){
     let alreadyExistInCart: boolean = false;
@@ -28,6 +30,7 @@ export class CartService {
       this.cartItems.push(cartItem);
     }
     this.calculateTotalPrice();
+    this.updateLocalStorage();
   }
 
   calculateTotalPrice(){
@@ -49,6 +52,7 @@ export class CartService {
     else{
       this.calculateTotalPrice();
     }
+    this.updateLocalStorage();
   }
 
   removeCartItem(cartItem: CartItem){
@@ -59,5 +63,19 @@ export class CartService {
       this.cartItems.splice(itemIndex, 1);
       this.calculateTotalPrice();
     }
+    this.updateLocalStorage();
+  }
+
+  updateLocalStorage(){
+    localStorage.setItem("cartItems", JSON.stringify(this.cartItems));
+  }
+
+  clearLocalStorage(){
+    localStorage.removeItem("cartItems");
+    this.cartItems = null;
+  }
+
+  private setCartItems() {
+    this.cartItems = JSON.parse(localStorage.getItem("cartItems"));
   }
 }

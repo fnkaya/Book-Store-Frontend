@@ -6,7 +6,6 @@ import {BookDetailsComponent} from "./components/book/book-details/book-details.
 import {CartDetailsComponent} from "./components/cart-details/cart-details.component";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {CategoryComponent} from "./components/category/category.component";
-import {SearchComponent} from "./components/navbar/search/search.component";
 import {CartStatusComponent} from "./components/cart-status/cart-status.component";
 import {UserRoutingModule} from "./user-routing.module";
 import {BookService} from "../../services/book.service";
@@ -20,7 +19,19 @@ import {AuthenticationService} from "../../security/authentication.service";
 import {AuthGuard} from "../../security/auth.guard";
 import {JwtInterceptor} from "../../security/jwt.interceptor";
 import {ErrorInterceptor} from "../../security/authtentication.interceptor";
-import { FooterComponent } from './components/footer/footer.component';
+import {FooterComponent} from './components/footer/footer.component';
+import {ProfileComponent} from './components/profile/profile.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { AccountComponent } from './components/profile/account/account.component';
+import { OrdersComponent } from './components/profile/orders/orders.component';
+import {MatCardModule} from "@angular/material/card";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatButtonModule} from "@angular/material/button";
+import { OrderDetailComponent } from './components/profile/order-detail/order-detail.component';
+import {MatMenuModule} from "@angular/material/menu";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatListModule} from "@angular/material/list";
 
 
 @NgModule({
@@ -28,7 +39,6 @@ import { FooterComponent } from './components/footer/footer.component';
     UserComponent,
     BookListComponent,
     CategoryComponent,
-    SearchComponent,
     BookDetailsComponent,
     CartStatusComponent,
     CartDetailsComponent,
@@ -36,15 +46,27 @@ import { FooterComponent } from './components/footer/footer.component';
     HomeComponent,
     BookComponent,
     FooterComponent,
+    ProfileComponent,
+    CheckoutComponent,
+    AccountComponent,
+    OrdersComponent,
+    OrderDetailComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     UserRoutingModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatExpansionModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatDividerModule,
+    MatListModule
   ],
   exports: [
-    SearchComponent,
     UserComponent
   ],
   providers: [

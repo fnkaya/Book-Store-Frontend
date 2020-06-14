@@ -21,6 +21,9 @@
                  (page)="setPage($event)">
   </ngx-datatable>
 
+  <ng-template #templatePrice let-value="value" ngx-datatable-cell-template>
+    {{value | currency: '₺'}}
+  </ng-template>
   <ng-template #templateActionsCell let-row="row" let-value="value">
     <a class="pointer" (click)="showDeleteConfirm(value)">
       <i class="fas fa-trash-alt text-danger"></i>
@@ -34,9 +37,9 @@
   <ng-template #templateInsert>
     <div class="modal-header">
       <h2 class="modal-title">Insert Book</h2>
-      <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+<!--      <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">-->
+<!--        <span aria-hidden="true">&times;</span>-->
+<!--      </button>-->
     </div>
     <div class="modal-body">
       <form [formGroup]="bookForm" (ngSubmit)="saveBook()">

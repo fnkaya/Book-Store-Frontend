@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Book} from "../../../../../models/book";
 import {BookService} from "../../../../../services/book.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CartService} from "../../../../../services/cart.service";
 import {CartItem} from "../../../../../models/cart-item";
 
@@ -32,7 +32,6 @@ export class BookListComponent implements OnInit {
   }
 
   listBooks(){
-    // this._spinnerService.show();
     if (this._activatedRoute.snapshot.paramMap.has('keyword')){
       this.handleSearchBooks();
     }
@@ -67,14 +66,11 @@ export class BookListComponent implements OnInit {
 
   processPaginate(){
     return data => {
-      // setTimeout(() => {
-      //   this._spinnerService.hide();
         this.books = data.content;
         this.currentPage = data.page + 1;
         this.totalRecords = data.totalElements;
         this.totalPages = data.totalPages;
         this.pageSize = data.size;
-      // }, 500);
     }
   }
 

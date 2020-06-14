@@ -23,6 +23,7 @@ export class BookComponent implements OnInit {
   cols = [];
   page = new Page();
   @ViewChild('templateActionsCell', {static: true}) templateDeleteCell: TemplateRef<any>;
+  @ViewChild('templatePrice', {static: true}) templateBalanceCell: TemplateRef<any>;
 
   //Form
   modalRef: BsModalRef;
@@ -54,7 +55,7 @@ export class BookComponent implements OnInit {
     this.cols = [
       {prop: 'name', name: 'Book Name'},
       {prop: 'author', name: 'Author Name'},
-      {prop: 'unitPrice', name: 'Price'},
+      {prop: 'unitPrice', name: 'Price', cellTemplate: this.templateBalanceCell, flexGrow: 1},
       {prop: 'unitsInStock', name: 'Stock'},
       {prop: 'category.name', name: 'Category'},
       {prop: 'id', name: 'Actions', cellTemplate: this.templateDeleteCell, flexGrow: 1, sortable: false}

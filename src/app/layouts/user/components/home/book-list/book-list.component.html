@@ -1,22 +1,21 @@
-
     <div class="row">
       <div class="col-4 mb-4" *ngFor="let book of books">
         <div class="card h-100 shadow">
-          <a routerLink="/home/book/{{book.id}}">
+          <a routerLink="/book/{{book.id}}">
             <img class="card-img-top" height="300" [src]="book.imageUrl"  alt="Book Image">
           </a>
           <div class="card-body">
             <h3 class="card-title">
-              <a class="text-dark" routerLink="/home/book/{{book.id}}">
+              <a class="text-dark" routerLink="/book/{{book.id}}">
                 {{book.name}}
               </a>
             </h3>
             <h4><strong>{{book.unitPrice | currency: "₺"}}</strong></h4>
             <h5 class="card-text text-truncate">{{book.description}}</h5>
           </div>
-          <div class="card-footer">
+          <div class="card-footer text-center">
             <div class="btn-group">
-              <button class="btn btn-outline-secondary float-left" routerLink="/home/book/{{book.id}}">
+              <button class="btn btn-outline-secondary float-left" routerLink="/book/{{book.id}}">
                 Details
               </button>
               <button class="btn btn-primary float-right" (click)="addToCart(book)">
@@ -26,9 +25,9 @@
           </div>
         </div>
       </div>
-      <div *ngIf="books?.length == 0" class="col-12 alert alert-warning text-dark text-center shadow" >
+      <mat-card *ngIf="books?.length == 0" class="font-italic text-center w-100 shadow bg-warning">
         No Books Found
-      </div>
+      </mat-card>
     </div>
 
     <div *ngIf="totalPages > 1">

@@ -1,0 +1,82 @@
+<!--<ngx-datatable class="material w-100"-->
+<!--               [rows]="orders"-->
+<!--               [columnMode]="'force'"-->
+<!--               [headerHeight]="50"-->
+<!--               [rowHeight]="'auto'"-->
+<!--               [footerHeight]="50"-->
+<!--               [sorts]="[{ prop: 'admin', dir: 'desc' }]"-->
+<!--               [externalPaging]="true"-->
+<!--               [count]="page.totalElements"-->
+<!--               [offset]="page.page"-->
+<!--               [limit]="page.size"-->
+<!--               (page)="setPage($event)">-->
+<!--  <ngx-datatable-column prop="id" name="Order ID"></ngx-datatable-column>-->
+<!--  <ngx-datatable-column prop="name" name="Customer Name"></ngx-datatable-column>-->
+<!--  <ngx-datatable-column prop="customerId" name="Customer ID"></ngx-datatable-column>-->
+<!--  <ngx-datatable-column prop="phoneNumber" name="Customer Phone"></ngx-datatable-column>-->
+<!--  <ngx-datatable-column prop="admin" name="Role"></ngx-datatable-column>-->
+<!--</ngx-datatable>-->
+<mat-accordion>
+
+  <mat-expansion-panel *ngFor="let order of orders" class="shadow">
+    <mat-expansion-panel-header class="p-5">
+      <mat-panel-title>
+        <div class="row w-100">
+          <div class="col-3">Order ID: {{order['id']}}</div>
+          <div class="col-3">Total Quantity: <span class="badge badge-secondary badge-pill">{{order['totalQuantity']}}</span></div>
+          <div class="col-3">{{order['totalPrice'] | currency: '₺'}}</div>
+          <div class="col-3">{{order['date'] | date: 'longDate'}}</div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="row mb-3">
+      <div class="col-2 font-weight-bold text-center">Product ID</div>
+      <div class="col-4 font-weight-bold text-center">Product Name</div>
+      <div class="col-2 font-weight-bold text-center">Quantity</div>
+      <div class="col-2 font-weight-bold text-center">Price</div>
+      <div class="col-2 font-weight-bold text-center">Sub Total</div>
+    </div>
+
+  <div class="row mb-3" *ngFor="let item of order['cartItems']">
+    <div class="col-2 text-center text-muted">{{item.id}}</div>
+    <div class="col-4 text-center text-muted">{{item.name}}</div>
+    <div class="col-2 text-center text-muted">{{item.quantity}}</div>
+    <div class="col-2 text-center text-muted">{{item.unitPrice | currency: '₺'}}</div>
+    <div class="col-2 text-center text-muted">{{item.quantity * item.unitPrice | currency: '₺'}}</div>
+  </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="row my-3">
+      <div class="col-4">
+        <label class="badge">Customer Name: </label>
+        <span>{{order.name}}</span>
+      </div>
+      <div class="col-3">
+        <label class="badge">Phone Number: </label>
+        <span>{{order.phoneNumber}}</span>
+      </div>
+      <div class="col-2">
+        <label class="badge">Zip Code: </label>
+        <span>{{order.zipcode}}</span>
+      </div>
+    </div>
+    <div class="row my-3">
+      <div class="col-4">
+        <label class="badge">Address: </label>
+        <span>{{order.address}}</span>
+      </div>
+      <div class="col-3">
+        <label class="badge">State: </label>
+        <span>{{order.state}}</span>
+      </div>
+      <div class="col-2">
+        <label class="badge">City: </label>
+        <span>{{order.city}}</span>
+      </div>
+    </div>
+
+  </mat-expansion-panel>
+
+</mat-accordion>

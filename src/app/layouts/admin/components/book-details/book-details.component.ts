@@ -51,23 +51,30 @@ export class BookDetailsComponent implements OnInit {
   initForm(response){
     this.currentCategory = response.category.name;
     return this.bookForm = this._formBuilder.group({
-      'id': response['id'],
-      'name': response['name'],
-      'author': response['author'],
-      'description': response['description'],
-      'imageUrl': response['imageUrl'],
-      'unitPrice': response['unitPrice'],
-      'unitsInStock': response['unitsInStock'],
-      'category': response['category']
+      id: response['id'],
+      name: response['name'],
+      author: response['author'],
+      description: response['description'],
+      imageUrl: response['imageUrl'],
+      unitPrice: response['unitPrice'],
+      unitsInStock: response['unitsInStock'],
+      category: {
+        id: response['category']['id'],
+        name: response['category']['name']
+      }
     });
   }
 
-  get formControls() {return this.bookForm.controls}
+  get f() {return this.bookForm.controls}
 
   saveBook() {
     this._bookService.update(this.bookForm.value).subscribe(() => {
       this._router.navigateByUrl('/admin');
     });
+  }
+
+  compareFn(c1: Category, c2: Category): boolean {
+    return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
 }
 

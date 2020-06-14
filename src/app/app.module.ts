@@ -5,19 +5,17 @@ import {AppComponent} from './app.component';
 import {PageNotFoundComponent} from './shared/page-not-found/page-not-found.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {ConfirmDialogComponent} from "./shared/confirm-dialog/confirm-dialog.component";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from '@angular/fire'
 import {AngularFireStorageModule} from '@angular/fire/storage'
 import {environment} from '../environments/environment'
-import {JwtInterceptor} from "./security/jwt.interceptor";
 import {AuthenticationService} from "./security/authentication.service";
-import {AuthGuard} from "./security/auth.guard";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {LoginComponent} from './login/login.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {RegisterComponent} from './register/register.component';
+import {JwtInterceptor} from "./security/jwt.interceptor";
 import {ErrorInterceptor} from "./security/authtentication.interceptor";
-import { LoginComponent } from './shared/login/login.component';
-import {ReactiveFormsModule} from "@angular/forms";
-import { RegisterComponent } from './shared/register/register.component';
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @NgModule({
@@ -30,6 +28,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -41,7 +40,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     ConfirmDialogComponent,
   ],
   providers: [
-    AuthenticationService
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

@@ -1,23 +1,7 @@
-<ul class="list-group">
-  <li class="list-group-item p-0" routerLink="/home/cart">
-    <span class="btn btn-secondary font-weight-bold w-100 py-2">
-      Go to Cart <i class="fas fa-shopping-cart"></i>
-    </span>
-  </li>
-  <li class="list-group-item" *ngIf="cartItems?.length <= 0">
-    <div class="text-center">Empty</div>
-  </li>
-  <li class="list-group-item" *ngFor="let cartItem of cartItems">
-    <div class="small" >
-      <div>
-        <span>{{cartItem.name +' x '+ cartItem.quantity}}</span>
-      </div>
-      <strong>{{cartItem.quantity * cartItem.unitPrice | currency: '₺'}}</strong>
-    </div>
-  </li>
-  <li class="list-group-item p-0" routerLink="/home/cart">
-    <span class="btn btn-outline-secondary font-weight-bold w-100 py-2">
-      Total: {{totalPrice | currency: '₺'}}
-    </span>
-  </li>
-</ul>
+<a mat-stroked-button class="btn  custom-btn " routerLink="/cart">
+  {{totalPrice | currency: '₺'}}&nbsp;
+  <span class="badge badge-dark">{{totalQuantity}}</span>&nbsp;
+  <i class="fas fa-cart-arrow-down"></i>
+</a>
+
+

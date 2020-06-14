@@ -13,6 +13,7 @@ export class CartDetailsComponent implements OnInit {
   totalPrice: number = 0;
   totalQuantity: number = 0;
   shipping: number = 10;
+  deneme = true;
 
   constructor(private _cartService: CartService) { }
 

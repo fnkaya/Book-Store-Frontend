@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators';
-import {AuthenticationService} from "../../security/authentication.service";
-import {UserService} from "../../services/user.service";
-import {log} from "util";
+import {AuthenticationService} from "../security/authentication.service";
+import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-login',
@@ -32,14 +31,11 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
 
-    // reset login status
     this.authenticationService.logout();
 
-    // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  // convenience getter for easy access to form fields
   get f() {
     return this.loginForm.controls;
   }
@@ -47,7 +43,6 @@ export class LoginComponent implements OnInit {
   login() {
     this.submitted = true;
 
-    // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
@@ -56,19 +51,17 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
-        data => {
-          // this.router.navigate([this.returnUrl]);
-          this.authenticationService.getCurrentUserInfos(data).subscribe(res => {
-            const admin = res.admin;
-            if (admin)
-              this.router.navigateByUrl("/admin");
+        loginResponse => {
+          this.userService.getByUsername(loginResponse.username).subscribe(response => {
+            if (response.admin)
+              this.router.navigateByUrl("/admin/book");
             else
-              this.router.navigateByUrl("/home");
+              this.router.navigateByUrl("/");
           })
         },
         error => {
-          this.error = error.error.message;
-          console.log(this.error)
+          this.error = error;
+          console.log(error)
           this.loading = false;
         });
   }

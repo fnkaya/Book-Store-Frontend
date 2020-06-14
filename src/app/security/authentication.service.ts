@@ -3,14 +3,12 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {environment} from "../../environments/environment";
 import {UserService} from "../services/user.service";
-import {Observable} from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
 
 
-  constructor(private http: HttpClient,
-              private userService: UserService) {}
+  constructor(private http: HttpClient) {}
 
   login(username: string, password: string) {
     return this.http.post<any>( environment.API_BASE_PATH + '/token', {username, password})
@@ -24,8 +22,14 @@ export class AuthenticationService {
 
   register(registerData) {
     return this.http.post<any>( environment.API_BASE_PATH + '/token/register', registerData)
-      .pipe(map(res => {
-        return res;
+      .pipe(map(response => {
+        return response;
+      }));
+  }
+  registerAdmin(registerData) {
+    return this.http.post<any>( environment.API_BASE_PATH + '/token/register/admin', registerData)
+      .pipe(map(response => {
+        return response;
       }));
   }
 
@@ -33,7 +37,8 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
   }
 
-  getCurrentUserInfos(data){
-    return this.userService.getByUsername(data.username);
+  loggedIn(){
+    return !!localStorage.getItem('currentUser');
   }
+
 }

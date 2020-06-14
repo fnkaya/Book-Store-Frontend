@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from "../../../../security/authentication.service";
 import {Router} from "@angular/router";
+import {UserService} from "../../../../services/user.service";
 
 @Component({
   selector: 'app-navbar',
@@ -11,33 +12,32 @@ export class NavbarComponent implements OnInit {
 
   title = 'Book Store';
   token = '';
-  currentUser = {};
+  userInfos = {};
 
   constructor(private _authenticationService: AuthenticationService,
+              private _userService: UserService,
               private _router: Router) { }
 
   ngOnInit(): void {
-    const temp = localStorage.getItem('currentUser');
-    this.token = JSON.parse(temp);
-    if (this.token != null)
-      this.getCurrentUserInfos(this.token);
+    this.getCurrentUser();
   }
 
-  private getCurrentUserInfos(token) {
-      this._authenticationService.getCurrentUserInfos(token).subscribe(resp => {
-        this.currentUser = resp;
-      })
-  }
-
-  handleLogoutSignin() {
-    if (this.token == null)
-      this._router.navigateByUrl("/login");
-    else
-      this.logout();
+  getCurrentUser(){
+    this.token = JSON.parse(localStorage.getItem('currentUser'));
+    if (this.token != null){
+      this._userService.getByUsername(this.token['username']).subscribe(
+        data => this.userInfos = data
+      );
+    }
   }
 
   logout() {
     this._authenticationService.logout();
     location.reload(true);
+  }
+
+  searchBooks(keyword: string){
+    if (keyword != null && keyword.trim() != "")
+      this._router.navigateByUrl('/search/' + keyword);
   }
 }

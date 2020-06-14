@@ -2,11 +2,10 @@
 
   <div class="row">
       <div class="col-9">
-          <table class="table shadow" *ngIf="cartItems.length > 0">
+          <table class="table shadow">
             <thead class="bg-dark text-light">
             <tr>
-              <td class="w-25">Book Image</td>
-              <td class="w-50">Book Details</td>
+              <td colspan="2" class="w-75 text-center">Product</td>
               <td class="w-25">Price</td>
             </tr>
             </thead>
@@ -45,12 +44,14 @@
                 </div>
               </td>
             </tr>
+            <tr *ngIf="cartItems.length == 0">
+              <td class="font-italic text-center text-muted" colspan="3">
+                Your cart is empty
+              </td>
+            </tr>
             </tbody>
           </table>
-        <div class="alert alert-warning w-100 shadow text-center text-dark" role="alert" *ngIf="cartItems.length == 0">
-          Your cart is empty
-        </div>
-        <button class="btn btn-primary text-white shadow" routerLink="/home">
+        <button class="btn btn-dark text-white shadow" routerLink="/">
           <i class="fas fa-arrow-left mr-2"></i>
           <span>Go Back</span>
         </button>
@@ -67,12 +68,12 @@
             <p >Total Price: <strong>{{totalPrice | currency: '₺'}}</strong></p>
           </li>
           <li class="list-group-item">
-            <p *ngIf="totalPrice >= 200; then thenBlock; else elseBlock;"></p>
+            <p *ngIf="totalPrice >= 50; then thenBlock; else elseBlock;"></p>
             <ng-template #thenBlock>Shipping: <strong>FREE</strong></ng-template>
             <ng-template #elseBlock>Shipping: <strong>{{shipping | currency: '₺'}}</strong></ng-template>
           </li>
         </ul>
-        <button class="btn btn-success mt-3 w-100 shadow">
+        <button *ngIf="cartItems.length > 0" class="btn btn-success mt-3 w-100 shadow" routerLink="/checkout" >
           <span class="font-weight-bold">Make Payment</span>
           <i class="fas fa-money-check ml-2"></i>
         </button>

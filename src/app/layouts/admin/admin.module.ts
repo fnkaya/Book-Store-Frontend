@@ -24,6 +24,11 @@ import {AuthGuard} from "../../security/auth.guard";
 import {JwtInterceptor} from "../../security/jwt.interceptor";
 import {ErrorInterceptor} from "../../security/authtentication.interceptor";
 import {MatButtonModule} from "@angular/material/button";
+import {ConfirmDialogComponent} from "../../shared/confirm-dialog/confirm-dialog.component";
+import { OrderListComponent } from './components/order-list/order-list.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatTableModule} from "@angular/material/table";
+import {MatDividerModule} from "@angular/material/divider";
 
 
 @NgModule({
@@ -35,7 +40,8 @@ import {MatButtonModule} from "@angular/material/button";
     BookDetailsComponent,
     BookCategoryComponent,
     SidebarComponent,
-    UserListComponent
+    UserListComponent,
+    OrderListComponent
   ],
   imports: [
     CommonModule,
@@ -47,6 +53,9 @@ import {MatButtonModule} from "@angular/material/button";
     MatSidenavModule,
     FormsModule,
     MatButtonModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatDividerModule
   ],
   exports: [RouterModule],
   providers: [
