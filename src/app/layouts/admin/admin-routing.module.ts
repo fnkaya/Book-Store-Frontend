@@ -4,15 +4,15 @@ import {AdminComponent} from "./admin.component";
 import {BookDetailsComponent} from "./components/book-details/book-details.component";
 import {BookCategoryComponent} from "./components/book-category/book-category.component";
 import {UserListComponent} from "./components/user-list/user-list.component";
-import {AuthGuard} from "../../security/auth.guard";
 import {OrderListComponent} from "./components/order-list/order-list.component";
+import {AdminAuthGuard} from "../../security/admin.auth.guard";
 
 
 const routes: Routes = [
   {
     path: '',
     component: AdminComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminAuthGuard],
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'book'},
       {path: 'book', component: BookCategoryComponent},

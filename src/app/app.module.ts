@@ -9,13 +9,19 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from '@angular/fire'
 import {AngularFireStorageModule} from '@angular/fire/storage'
 import {environment} from '../environments/environment'
-import {AuthenticationService} from "./security/authentication.service";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {LoginComponent} from './login/login.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RegisterComponent} from './register/register.component';
 import {JwtInterceptor} from "./security/jwt.interceptor";
 import {ErrorInterceptor} from "./security/authtentication.interceptor";
+import {MatCardModule} from "@angular/material/card";
+import {MatButtonModule} from "@angular/material/button";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatIconModule} from "@angular/material/icon";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -34,7 +40,14 @@ import {ErrorInterceptor} from "./security/authtentication.interceptor";
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatCardModule,
+    MatButtonModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatSnackBarModule
   ],
   exports: [
     ConfirmDialogComponent,

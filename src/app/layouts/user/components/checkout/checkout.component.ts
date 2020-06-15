@@ -5,6 +5,7 @@ import {CartService} from "../../../../services/cart.service";
 import {UserService} from "../../../../services/user.service";
 import {OrderService} from "../../../../services/order.service";
 import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-checkout',
@@ -14,9 +15,11 @@ import {Router} from "@angular/router";
 export class CheckoutComponent implements OnInit {
 
   checkoutForm: FormGroup;
+  cc: FormGroup;
   cartItems: CartItem[] = [];
   totalPrice: number = 0;
   totalQuantity: number = 0;
+  shippingPrice: number = 10;
 
   expirationMonth = [1,2,3,4,5,6,7,8,9,10,11,12];
   expirationYear = [2020,2021,2022,2023,2024,2025];
@@ -26,11 +29,20 @@ export class CheckoutComponent implements OnInit {
               private _cartService: CartService,
               private _userService: UserService,
               private _orderService: OrderService,
-              private _router: Router) { }
+              private _router: Router,
+              private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.cartDetails();
     this.customerDetails();
+
+    this.cc = this._formBuilder.group({
+      nameOnCC: [null],
+      ccNumber: [null],
+      cvv: [null],
+      expMonth: [null],
+      expYear: [null]
+    })
   }
 
   onSubmit() {
@@ -38,8 +50,11 @@ export class CheckoutComponent implements OnInit {
     console.log(this.checkoutForm.value);
     this._orderService.save(this.checkoutForm.value).subscribe(
       response => {
-        this._cartService.clearLocalStorage();
-        this._router.navigateByUrl("/");
+        localStorage.removeItem('cartItems');
+        this._router.navigateByUrl("/").then( () => {
+          location.reload()
+          this.openSnackBar();
+        });
       }
     );
   }
@@ -47,7 +62,12 @@ export class CheckoutComponent implements OnInit {
   cartDetails(){
     this.cartItems = this._cartService.cartItems;
     this._cartService.totalPrice.subscribe(
-      data => this.totalPrice = data
+      data => {
+        if (data >= 50)
+          this.totalPrice = data
+        else
+          this.totalPrice = data + this.shippingPrice
+      }
     )
     this._cartService.totalQuantity.subscribe(
       data => this.totalQuantity = data
@@ -78,14 +98,12 @@ export class CheckoutComponent implements OnInit {
       city: data['city'],
       state: data['state'],
       zipcode: data['zipcode']
-      // cc: this._formBuilder.group({
-      //   nameOnCC: [null],
-      //   ccNumber: [null],
-      //   cvv: [null],
-      //   expMonth: [null],
-      //   expYear: [null]
-      // })
     })
   }
 
+  private openSnackBar() {
+    this._snackBar.open('Payment Completed', 'DISMISS', {
+      duration: 3000,
+    });
+  }
 }

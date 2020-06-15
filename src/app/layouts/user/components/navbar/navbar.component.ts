@@ -32,8 +32,10 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this._authenticationService.logout();
-    location.reload(true);
+    localStorage.removeItem('cartItems');
+    this._authenticationService.logout()
+    this._router.navigateByUrl("/").then( () => location.reload())
+
   }
 
   searchBooks(keyword: string){

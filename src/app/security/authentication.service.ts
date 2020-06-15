@@ -8,7 +8,7 @@ import {UserService} from "../services/user.service";
 export class AuthenticationService {
 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,) {}
 
   login(username: string, password: string) {
     return this.http.post<any>( environment.API_BASE_PATH + '/token', {username, password})

@@ -9,6 +9,7 @@ import {Category} from "../../../../../models/category";
 import {AngularFireStorage} from "@angular/fire/storage";
 import {finalize} from "rxjs/operators";
 import {ActivatedRoute, Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Component({
@@ -38,7 +39,8 @@ export class BookComponent implements OnInit {
               private _formBuilder: FormBuilder,
               private _storage: AngularFireStorage,
               private _activatedRoute: ActivatedRoute,
-              private _router: Router) {  }
+              private _router: Router,
+              private _snackBar: MatSnackBar) {  }
 
   ngOnInit(): void {
     this.initColumns();
@@ -53,7 +55,7 @@ export class BookComponent implements OnInit {
   //Table
   initColumns(){
     this.cols = [
-      {prop: 'name', name: 'Book Name'},
+      {prop: 'name', name: 'Book Name', width: 250},
       {prop: 'author', name: 'Author Name'},
       {prop: 'unitPrice', name: 'Price', cellTemplate: this.templateBalanceCell, flexGrow: 1},
       {prop: 'unitsInStock', name: 'Stock'},
@@ -103,7 +105,10 @@ export class BookComponent implements OnInit {
           this._bookService.delete(value).subscribe(
             response => {
               if (response === true)
+              {
                 this.setPage({offset: 0})
+                this.openSnackBar("Book successfully deleted");
+              }
             });
         }
       }
@@ -144,6 +149,7 @@ export class BookComponent implements OnInit {
           this._bookService.create(this.bookForm.value).subscribe(() => {
               this.setPage({offset: 0})
               this.closeModal();
+              this.openSnackBar('Book successfully added');
             });
         })
       })
@@ -171,5 +177,11 @@ export class BookComponent implements OnInit {
   searchBooks(keyword: string) {
     if (keyword != null && keyword.trim() != "")
       this._router.navigateByUrl('/admin/book/search/' + keyword);
+  }
+
+  openSnackBar(message) {
+    this._snackBar.open(message, 'DISMISS', {
+      duration: 3000,
+    });
   }
 }

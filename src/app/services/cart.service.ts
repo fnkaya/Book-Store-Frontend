@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {CartItem} from "../models/cart-item";
 import {Subject} from "rxjs";
 
@@ -11,8 +11,12 @@ export class CartService {
   totalPrice: Subject<number> = new Subject<number>();
   totalQuantity: Subject<number> = new Subject<number>();
 
+
   constructor() {
-    this.setCartItems();
+    if (JSON.parse(localStorage.getItem('cartItems'))){
+      const array = JSON.parse(localStorage.getItem('cartItems'));
+      array.forEach(data => this.cartItems.push(data) )
+    }
   }
 
   addToCart(cartItem: CartItem){
@@ -30,15 +34,15 @@ export class CartService {
       this.cartItems.push(cartItem);
     }
     this.calculateTotalPrice();
-    this.updateLocalStorage();
   }
 
   calculateTotalPrice(){
+    this.uploadCartItems();
     let totalPriceValue: number = 0;
     let totalQuantityValue: number = 0;
-    for (let currentCartItem of this.cartItems){
-      totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice;
-      totalQuantityValue += currentCartItem.quantity;
+    for (let cartItem of this.cartItems){
+      totalPriceValue += cartItem.quantity * cartItem.unitPrice;
+      totalQuantityValue += cartItem.quantity;
     }
     this.totalPrice.next(totalPriceValue);
     this.totalQuantity.next(totalQuantityValue);
@@ -52,7 +56,6 @@ export class CartService {
     else{
       this.calculateTotalPrice();
     }
-    this.updateLocalStorage();
   }
 
   removeCartItem(cartItem: CartItem){
@@ -63,19 +66,9 @@ export class CartService {
       this.cartItems.splice(itemIndex, 1);
       this.calculateTotalPrice();
     }
-    this.updateLocalStorage();
   }
 
-  updateLocalStorage(){
-    localStorage.setItem("cartItems", JSON.stringify(this.cartItems));
-  }
-
-  clearLocalStorage(){
-    localStorage.removeItem("cartItems");
-    this.cartItems = null;
-  }
-
-  private setCartItems() {
-    this.cartItems = JSON.parse(localStorage.getItem("cartItems"));
+  private uploadCartItems() {
+    localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
   }
 }

@@ -13,7 +13,9 @@ export class UserService {
 
 
   constructor(private httpClient: HttpClient,
-              private _apiService: ApiService) { }
+              private _apiService: ApiService) {
+
+  }
 
 
 

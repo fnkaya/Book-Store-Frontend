@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {BookService} from "../../../../services/book.service";
 import {Book} from "../../../../models/book";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-book-details',
@@ -23,7 +24,8 @@ export class BookDetailsComponent implements OnInit {
               private _categoryService: CategoryService,
               private _activatedRoute: ActivatedRoute,
               private _router: Router,
-              private _formBuilder: FormBuilder) { }
+              private _formBuilder: FormBuilder,
+              private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getCategories();
@@ -70,11 +72,18 @@ export class BookDetailsComponent implements OnInit {
   saveBook() {
     this._bookService.update(this.bookForm.value).subscribe(() => {
       this._router.navigateByUrl('/admin');
+      this.openSnackBar()
     });
   }
 
   compareFn(c1: Category, c2: Category): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
+  }
+
+  private openSnackBar() {
+    this._snackBar.open('Book successfully edited', 'DISMISS', {
+      duration: 3000,
+    });
   }
 }
 

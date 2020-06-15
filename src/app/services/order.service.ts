@@ -33,9 +33,8 @@ export class OrderService {
     );
   }
 
-  getByCustomerId(cutomerId): Observable<any>{
-    console.log(cutomerId)
-    return this._apiService.get(this.ORDER_PATH +'/customer/' + cutomerId, null).pipe(map(response => {
+  getByCustomerId(cutomerId, page): Observable<any>{
+    return this._apiService.get(this.ORDER_PATH +'/customer/' + cutomerId, page).pipe(map(response => {
       if (response) {
         return response;
       }

@@ -4,6 +4,7 @@ import {CategoryService} from "../../../../../services/category.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {BookService} from "../../../../../services/book.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-category',
@@ -19,7 +20,8 @@ export class CategoryComponent implements OnInit {
   constructor(private _categoryService: CategoryService,
               private _bookService: BookService,
               private _formBuilder: FormBuilder,
-              private _modalService: BsModalService) { }
+              private _modalService: BsModalService,
+              private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getCategories();
@@ -49,6 +51,7 @@ export class CategoryComponent implements OnInit {
     this._categoryService.create(this.categoryForm.value).subscribe( () => {
       this._categoryService.getAll().subscribe(data => {
         this.categories = data;
+        this.openSnackBar();
       })}
     );
     this.closeModal();
@@ -60,4 +63,9 @@ export class CategoryComponent implements OnInit {
     });
   }
 
+  private openSnackBar() {
+    this._snackBar.open('Category Added', 'DISMISS', {
+      duration: 3000,
+    });
+  }
 }

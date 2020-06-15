@@ -29,6 +29,7 @@ import { OrderListComponent } from './components/order-list/order-list.component
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
 import {MatDividerModule} from "@angular/material/divider";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @NgModule({
@@ -43,20 +44,21 @@ import {MatDividerModule} from "@angular/material/divider";
     UserListComponent,
     OrderListComponent
   ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    HttpClientModule,
-    NgxDatatableModule,
-    ModalModule.forRoot(),
-    ReactiveFormsModule,
-    MatSidenavModule,
-    FormsModule,
-    MatButtonModule,
-    MatExpansionModule,
-    MatTableModule,
-    MatDividerModule
-  ],
+    imports: [
+        CommonModule,
+        AdminRoutingModule,
+        HttpClientModule,
+        NgxDatatableModule,
+        ModalModule.forRoot(),
+        ReactiveFormsModule,
+        MatSidenavModule,
+        FormsModule,
+        MatButtonModule,
+        MatExpansionModule,
+        MatTableModule,
+        MatDividerModule,
+        MatPaginatorModule
+    ],
   exports: [RouterModule],
   providers: [
     BookService,

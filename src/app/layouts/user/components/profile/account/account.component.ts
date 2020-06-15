@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {UserService} from "../../../../../services/user.service";
 import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-account',
@@ -14,7 +15,8 @@ export class AccountComponent implements OnInit {
 
   constructor(private _userService: UserService,
               private _formBuilder: FormBuilder,
-              private _router: Router) { }
+              private _router: Router,
+              private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getUserProfile();
@@ -46,6 +48,13 @@ export class AccountComponent implements OnInit {
   saveProfile() {
     this._userService.update(this.profileForm.value).subscribe(() => {
       this.getUserProfile();
+      this.openSnackBar();
+    });
+  }
+
+  openSnackBar() {
+    this._snackBar.open('Profile successfully edited', 'DISMISS', {
+      duration: 3000,
     });
   }
 }

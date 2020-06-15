@@ -9,7 +9,7 @@ import {CartItem} from "../../../../models/cart-item";
 })
 export class CartStatusComponent implements OnInit {
 
-  cartItems: CartItem[] = [];
+  // cartItems: CartItem[] = [];
   totalPrice: number = 0;
   totalQuantity: number = 0;
 
@@ -20,7 +20,7 @@ export class CartStatusComponent implements OnInit {
   }
 
   updateCartStatus() {
-    this.cartItems = this._cartService.cartItems;
+    // this.cartItems = this._cartService.cartItems;
     this._cartService.totalPrice.subscribe(
       data => this.totalPrice = data
     );

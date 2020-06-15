@@ -11,18 +11,18 @@ export class OrderListComponent implements OnInit {
 
   orders = [];
   page = new Page();
-
   error = '';
 
   constructor(private _orderService: OrderService) { }
 
   ngOnInit(): void {
+    this.page.size = 5;
     this.setPage({offset: 0});
   }
 
-  setPage(pageInfo){
+  setPage(event){
+    this.page.page = event.pageIndex;
     this._orderService.getAll(this.page).subscribe(response => {
-      this.page.page = pageInfo.offset;
       this.page.size = response.size;
       this.page.page = response.page;
       this.page.totalElements = response.totalElements;

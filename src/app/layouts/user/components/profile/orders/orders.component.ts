@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {OrderService} from "../../../../../services/order.service";
 import {UserService} from "../../../../../services/user.service";
+import {Page} from "../../../../../models/page";
 
 @Component({
   selector: 'app-orders',
@@ -10,19 +11,27 @@ import {UserService} from "../../../../../services/user.service";
 export class OrdersComponent implements OnInit {
 
   orders: [] = [];
-
+  page = new Page();
+  currentUser: {} = {};
 
   constructor(private _orderService: OrderService,
               private _userService: UserService) { }
 
   ngOnInit(): void {
     this.getCurrentUser();
+    this.page.size = 5;
   }
 
-  private getUsersOrder(currentUser) {
-    this._orderService.getByCustomerId(currentUser['id']).subscribe(resp =>
-    {
-      this.orders = resp.content
+
+  setPage(event){
+    this.page.page = event.pageIndex;
+    console.log(this.page)
+    this._orderService.getByCustomerId(this.currentUser['id'], this.page).subscribe(response => {
+      this.page.size = response.size;
+      this.page.page = response.number;
+      this.page.totalElements = response.totalElements;
+      this.orders = response.content;
+
     })
   }
 
@@ -31,8 +40,8 @@ export class OrdersComponent implements OnInit {
     if (token != null){
       this._userService.getByUsername(token['username']).subscribe(
         data => {
-          const currentUser = data
-          this.getUsersOrder(currentUser);
+          this.currentUser = data;
+          this.setPage({offset: 0});
         }
       );
     }

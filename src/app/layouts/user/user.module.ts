@@ -32,6 +32,10 @@ import { OrderDetailComponent } from './components/profile/order-detail/order-de
 import {MatMenuModule} from "@angular/material/menu";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatListModule} from "@angular/material/list";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatStepperModule} from "@angular/material/stepper";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
@@ -64,7 +68,11 @@ import {MatListModule} from "@angular/material/list";
     MatButtonModule,
     MatMenuModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatPaginatorModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   exports: [
     UserComponent
