@@ -1,6 +1,6 @@
 # BOOK STORE WEB APPLICATION
 
-<a href="https://github.com/fnkaya/BookStore_SpringBoot">Backend</a>
+<a href="https://github.com/fnkaya/BookStore_SpringBoot">Backend >>></a>
 
 ### USER PAGE
 
